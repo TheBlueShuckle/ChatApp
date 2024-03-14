@@ -1,0 +1,25 @@
+﻿<Window x:Class="ChatApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ChatApp"
+        mc:Ignorable="d"
+        
+        Title="MainWindow" Height="450" Width="800"
+        Background="Black"
+        FontFamily="Consolas"
+        FontSize="16"
+        SizeToContent="WidthAndHeight">
+
+    <Grid>
+        <StackPanel Grid.Column="1">
+            <ListView Height="380" Width="790" Background="Black" BorderThickness="0" Margin="5, 5, 5, 0"/>
+
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Height="44" Width="10" Text=">" Foreground="White" Margin="5, 0, 0, 5"/>
+                <TextBox Height="44" Width="780" Background="Black" Foreground="White" BorderThickness="0" Margin="0, 0, 5, 5"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>
