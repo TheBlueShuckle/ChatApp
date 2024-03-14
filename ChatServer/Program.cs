@@ -10,6 +10,7 @@ namespace ChatServer
     {
         static void Main(string[] args)
         {
+
         }
     }
 }
