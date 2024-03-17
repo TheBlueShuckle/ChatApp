@@ -16,9 +16,17 @@ namespace ChatApp
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        public void TextBox_KeyEnterUpdate(object sender, KeyEventArgs e)
         {
-            InitializeComponent();
+            if (e.Key == Key.Enter)
+            {
+                TextBox textBox = (TextBox)sender;
+                DependencyProperty property = TextBox.TextProperty;
+
+                BindingExpression binding = BindingOperations.GetBindingExpression(textBox, property);
+
+                binding?.UpdateSource();
+            }
         }
     }
 }

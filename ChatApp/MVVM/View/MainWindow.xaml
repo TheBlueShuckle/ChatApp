@@ -3,22 +3,39 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ChatApp"
+        xmlns:local="clr-namespace:ChatApp" 
+        xmlns:viewmodel="clr-namespace:ChatClient.MVVM.ViewModel"
         mc:Ignorable="d"
         
-        Title="MainWindow" Height="450" Width="800"
+        Title="MainWindow" 
+        Height="450" 
+        Width="800"
         Background="Black"
         FontFamily="Consolas"
         FontSize="16"
         SizeToContent="WidthAndHeight">
 
+    <Window.DataContext>
+        <viewmodel:MainViewModel />
+    </Window.DataContext>
+    
     <Grid>
         <StackPanel Grid.Column="1">
             <ListView Height="380" Width="790" Background="Black" BorderThickness="0" Margin="5, 5, 5, 0"/>
 
             <StackPanel Orientation="Horizontal">
-                <TextBlock Height="44" Width="10" Text=">" Foreground="White" Margin="5, 0, 0, 5"/>
-                <TextBox Height="44" Width="780" Background="Black" Foreground="White" BorderThickness="0" Margin="0, 0, 5, 5"/>
+                <TextBlock Height="44" 
+                           Width="10" 
+                           Text=">" 
+                           Foreground="White" 
+                           Margin="5, 0, 0, 5"/>
+                <TextBox Height="44" 
+                         Width="780" 
+                         Background="Black" 
+                         Foreground="White" 
+                         BorderThickness="0" 
+                         Margin="0, 0, 5, 5" 
+                         KeyUp="TextBox_KeyEnterUpdate" />
             </StackPanel>
         </StackPanel>
     </Grid>
