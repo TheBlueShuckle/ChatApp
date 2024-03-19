@@ -16,20 +16,14 @@ namespace ChatClient.MVVM.ViewModel
     {
         public ObservableCollection<string> Messages;
 
-        public string Message { get; set; } 
-
-        public RelayCommand SendMessageToMessgaes {  get; set; }
-
         public MainViewModel()
         {
             Messages = new ObservableCollection<string>();
-
-            SendMessageToMessgaes = new RelayCommand(o => AddMessageToMessages(Message), o => !string.IsNullOrEmpty(Message));
         }
 
         public void AddMessageToMessages(string message)
         {
-            Messages.Add(message);
+            Application.Current.Dispatcher.Invoke(() => Messages.Add(message));
         }
     }
 }

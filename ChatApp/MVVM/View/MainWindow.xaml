@@ -26,6 +26,7 @@
             <ListView Height="380" 
                       Width="790" 
                       Background="Black" 
+                      Foreground="White"
                       BorderThickness="0" 
                       Margin="5, 5, 5, 0"
                       ItemsSource="{Binding Messages}"/>
@@ -45,7 +46,8 @@
                          BorderThickness="0" 
                          Margin="0, 0, 5, 5" 
                          KeyUp="TextBox_KeyEnterUpdate" 
-                         Text="{Binding Message}"/>
+                         Text="{Binding Message}"
+                         x:Name="MessageBox"/>
                 
             </StackPanel>
         </StackPanel>
