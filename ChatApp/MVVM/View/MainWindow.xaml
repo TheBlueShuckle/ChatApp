@@ -20,22 +20,33 @@
     </Window.DataContext>
     
     <Grid>
+        
         <StackPanel Grid.Column="1">
-            <ListView Height="380" Width="790" Background="Black" BorderThickness="0" Margin="5, 5, 5, 0"/>
+            
+            <ListView Height="380" 
+                      Width="790" 
+                      Background="Black" 
+                      BorderThickness="0" 
+                      Margin="5, 5, 5, 0"
+                      ItemsSource="{Binding Messages}"/>
 
             <StackPanel Orientation="Horizontal">
+                
                 <TextBlock Height="44" 
                            Width="10" 
                            Text=">" 
                            Foreground="White" 
                            Margin="5, 0, 0, 5"/>
+                
                 <TextBox Height="44" 
                          Width="780" 
                          Background="Black" 
                          Foreground="White" 
                          BorderThickness="0" 
                          Margin="0, 0, 5, 5" 
-                         KeyUp="TextBox_KeyEnterUpdate" />
+                         KeyUp="TextBox_KeyEnterUpdate" 
+                         Text="{Binding Message}"/>
+                
             </StackPanel>
         </StackPanel>
     </Grid>
