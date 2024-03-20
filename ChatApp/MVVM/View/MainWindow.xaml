@@ -28,14 +28,14 @@
             <RowDefinition Height="49"/>
         </Grid.RowDefinitions>
 
-        <ListView
+        <ListView Grid.Row="0"
                     Background="Black" 
                     Foreground="White"
                     BorderThickness="0" 
                     Margin="-2, 0, 0, 0"
                     ItemsSource="{Binding Messages}"/>
 
-        <DockPanel Grid.Row="2">
+        <DockPanel Grid.Row="1">
                 
             <TextBlock  Width="10" 
                         Text=">" 
