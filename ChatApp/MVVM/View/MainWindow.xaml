@@ -7,8 +7,8 @@
         xmlns:viewmodel="clr-namespace:ChatClient.MVVM.ViewModel"
         mc:Ignorable="d"
         
-        Title="MainWindow" 
-        Height="450" 
+        Title="Chat Client" 
+        Height="455" 
         Width="800"
         Background="Black"
         FontFamily="Consolas"
@@ -20,35 +20,35 @@
     </Window.DataContext>
     
     <Grid>
-        
-        <StackPanel Grid.Column="1">
-            
-            <ListView Height="380" 
-                      Width="790" 
-                      Background="Black" 
-                      Foreground="White"
-                      BorderThickness="0" 
-                      Margin="5, 5, 5, 0"
-                      ItemsSource="{Binding Messages}"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="49"/>
+        </Grid.RowDefinitions>
 
-            <StackPanel Orientation="Horizontal">
+        <ListView
+                    Background="Black" 
+                    Foreground="White"
+                    BorderThickness="0" 
+                    Margin="-2, 0, 0, 0"
+                    ItemsSource="{Binding Messages}"/>
+
+        <DockPanel Grid.Row="2">
                 
-                <TextBlock Height="44" 
-                           Width="10" 
-                           Text=">" 
-                           Foreground="White" 
-                           Margin="5, 0, 0, 5"/>
+            <TextBlock  Width="10" 
+                        Text=">" 
+                        Foreground="White" 
+                        Margin="5, 0, 0, 5"/>
                 
-                <TextBox Height="44" 
-                         Width="780" 
-                         Background="Black" 
-                         Foreground="White" 
-                         BorderThickness="0" 
-                         Margin="0, 0, 5, 5" 
-                         KeyUp="TextBox_KeyEnterUpdate" 
-                         x:Name="MessageBox"/>
+            <TextBox    Background="Black" 
+                        Foreground="White" 
+                        BorderThickness="0" 
+                        Margin="0, 0, 5, 5" 
+                        KeyUp="TextBox_KeyEnterUpdate" 
+                        x:Name="MessageBox"/>
                 
-            </StackPanel>
-        </StackPanel>
+        </DockPanel>
     </Grid>
 </Window>
