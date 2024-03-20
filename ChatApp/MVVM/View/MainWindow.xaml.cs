@@ -27,20 +27,19 @@ namespace ChatApp
         {
             if (e.Key == Key.Enter)
             {
-                string message = MessageBox.Text;
+                TextBox textBox = (TextBox)sender;
 
-                viewModel?.AddMessageToMessages(message);
+                if (!string.IsNullOrEmpty(textBox.Text))
+                {
+                    DependencyProperty property = TextBox.TextProperty;
 
-                MessageBox.Clear();
+                    BindingExpression binding = BindingOperations.GetBindingExpression(textBox, property);
 
-                //TextBox textBox = (TextBox)sender;
-                //DependencyProperty property = TextBox.TextProperty;
+                    binding?.UpdateSource();
 
-                //BindingExpression binding = BindingOperations.GetBindingExpression(textBox, property);
-
-                //binding?.UpdateSource();
-
-                //viewModel?.AddMessageToMessages(textBox.Text);
+                    viewModel?.AddMessageToMessages(textBox.Text);
+                    textBox.Clear();
+                }
             }
         }
     }
