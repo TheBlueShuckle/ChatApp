@@ -14,7 +14,7 @@ namespace ChatClient.MVVM.ViewModel
 {
     class MainViewModel
     {
-        public ObservableCollection<string> Messages;
+        public ObservableCollection<string> Messages { get; set; }
 
         public MainViewModel()
         {

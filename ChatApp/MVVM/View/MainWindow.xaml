@@ -46,7 +46,6 @@
                          BorderThickness="0" 
                          Margin="0, 0, 5, 5" 
                          KeyUp="TextBox_KeyEnterUpdate" 
-                         Text="{Binding Message}"
                          x:Name="MessageBox"/>
                 
             </StackPanel>
