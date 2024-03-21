@@ -9,18 +9,22 @@ namespace ChatClient.Net
 {
     class Server
     {
+        public bool IsConnected { get; set; }
         private TcpClient _client;
 
         public Server()
         {
             _client = new TcpClient();
+            IsConnected = false;
         }
 
-        public void ConnectToServer()
+        public void ConnectToServer(string IPAddress)
         {
             if (!_client.Connected)
             {
-                _client.Connect("127.0.0.1", 7891);
+                _client.Connect(IPAddress, 7891);
+
+                IsConnected = _client.Connected ? true : false;
             }
         }
     }
