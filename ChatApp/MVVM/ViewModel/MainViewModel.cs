@@ -26,6 +26,7 @@ namespace ChatClient.MVVM.ViewModel
         public ClientState State { get; set; }
 
         private Server _server;
+        private string ipAddress, username;
 
         public MainViewModel()
         {
@@ -34,11 +35,20 @@ namespace ChatClient.MVVM.ViewModel
             State = ClientState.Disconnected;
         }
 
-        public void a()
+        public async void DirectToCorrectMethod(string input)
         {
             switch (State)
             {
                 case ClientState.Disconnected:
+                    if (string.IsNullOrEmpty(ipAddress))
+                    {
+                        ipAddress = input;
+                    }
+
+                    else if (string.IsNullOrEmpty(username))
+                    {
+                        username = input;
+                    }
                     break;
 
                 case ClientState.Connecting:
@@ -50,6 +60,11 @@ namespace ChatClient.MVVM.ViewModel
                 default:
                     break;
             }
+        }
+
+        public void ConnectToServer()
+        {
+
         }
 
         public void AddMessageToMessages(string message)
