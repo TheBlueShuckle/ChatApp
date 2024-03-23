@@ -10,6 +10,7 @@ namespace ChatClient.Net
     class Server
     {
         public bool IsConnected { get; set; }
+
         private TcpClient _client;
 
         public Server()
@@ -18,13 +19,13 @@ namespace ChatClient.Net
             IsConnected = false;
         }
 
-        public void ConnectToServer(string IPAddress)
+        public void ConnectToServer(string ipAdress)
         {
             if (!_client.Connected)
             {
-                _client.Connect(IPAddress, 7891);
+                _client.Connect(ipAdress, 7891);
 
-                IsConnected = _client.Connected ? true : false;
+                IsConnected = _client.Connected;
             }
         }
     }

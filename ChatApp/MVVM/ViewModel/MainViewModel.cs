@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows;
 using ChatClient.MVVM.Core;
 using ChatClient.Net;
+using System.Globalization;
 
 namespace ChatClient.MVVM.ViewModel
 {
@@ -24,15 +25,17 @@ namespace ChatClient.MVVM.ViewModel
     {
         public ObservableCollection<string> Messages { get; set; }
         public ClientState State { get; set; }
+        public RelayCommand ConnectToServerCommand { get; set; }
 
         private Server _server;
-        private string ipAddress, username;
+        private string _ipAddress, _username;
 
         public MainViewModel()
         {
             Messages = new ObservableCollection<string>();
             _server = new Server();
             State = ClientState.Disconnected;
+            PrintMessage("Enter target IP Address");
         }
 
         public async void DirectToCorrectMethod(string input)
@@ -40,14 +43,21 @@ namespace ChatClient.MVVM.ViewModel
             switch (State)
             {
                 case ClientState.Disconnected:
-                    if (string.IsNullOrEmpty(ipAddress))
+                    if (string.IsNullOrEmpty(_ipAddress))
                     {
-                        ipAddress = input;
+                        _ipAddress = input;
+                        PrintMessage("Enter Username:");
                     }
 
-                    else if (string.IsNullOrEmpty(username))
+                    else if (string.IsNullOrEmpty(_username))
                     {
-                        username = input;
+                        _username = input;
+                    }
+
+                    if (!string.IsNullOrEmpty(_ipAddress) && !string.IsNullOrEmpty(_username))
+                    {
+                        PrintMessage($"Connecting to {_ipAddress} with the username {_username}");
+                        ConnectToServer();
                     }
                     break;
 
@@ -62,12 +72,16 @@ namespace ChatClient.MVVM.ViewModel
             }
         }
 
+
         public void ConnectToServer()
         {
-
+            if (!string.IsNullOrEmpty(_ipAddress) && !string.IsNullOrEmpty(_username))
+            {
+                _server.ConnectToServer(_ipAddress);
+            }
         }
 
-        public void AddMessageToMessages(string message)
+        public void PrintMessage(string message)
         {
             Application.Current.Dispatcher.Invoke(() => Messages.Add(message));
         }
