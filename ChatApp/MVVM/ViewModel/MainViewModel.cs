@@ -56,9 +56,17 @@ namespace ChatClient.MVVM.ViewModel
 
                     if (!string.IsNullOrEmpty(_ipAddress) && !string.IsNullOrEmpty(_username))
                     {
-                        PrintMessage($"Connecting to {_ipAddress} with the username {_username}");
-                        ConnectToServer();
+                        if (_server.ConnectToServer(_ipAddress, _username))
+                        {
+                            PrintMessage($"Connecting to {_ipAddress} with the username {_username}");
+                        }
+
+                        else
+                        {
+                            PrintMessage($"Could not connect to server with the IP Address {_ipAddress}");
+                        }
                     }
+
                     break;
 
                 case ClientState.Connecting:
@@ -69,15 +77,6 @@ namespace ChatClient.MVVM.ViewModel
 
                 default:
                     break;
-            }
-        }
-
-
-        public void ConnectToServer()
-        {
-            if (!string.IsNullOrEmpty(_ipAddress) && !string.IsNullOrEmpty(_username))
-            {
-                _server.ConnectToServer(_ipAddress);
             }
         }
 

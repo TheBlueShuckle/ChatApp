@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ChatServer.Net.IO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -19,8 +20,27 @@ namespace ChatServer
             _listener = new TcpListener(IPAddress.Parse("127.0.0.1"), 7891);
             _listener.Start();
 
-            Client _client = new Client(_listener.AcceptTcpClient());
-            Console.ReadKey();
+            while (true)
+            {
+                _users.Add(new Client(_listener.AcceptTcpClient()));
+                BroadcastConnection();
+            }
+        }
+
+
+        static void BroadcastConnection()
+        {
+            foreach (Client user in _users)
+            {
+                foreach (Client usr in _users)
+                {
+                    PacketBuilder broadcastPacket = new PacketBuilder();
+                    broadcastPacket.WriteOpCode(1);
+                    broadcastPacket.WriteMessage(usr.Username);
+                    broadcastPacket.WriteMessage(usr.UID.ToString());
+                    user.ClientSocket.Client.Send(broadcastPacket.GetPacketBytes());
+                }
+            }
         }
     }
 }
