@@ -19,7 +19,7 @@ namespace ChatServer
         public Client(TcpClient client)
         {
             ClientSocket = client;
-            UID = new Guid();
+            UID = Guid.NewGuid();
             _packetReader = new PacketReader(ClientSocket.GetStream());
             
             byte opCode = _packetReader.ReadByte();

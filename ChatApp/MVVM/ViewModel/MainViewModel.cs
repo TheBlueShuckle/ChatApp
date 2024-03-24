@@ -11,6 +11,8 @@ using System.Windows;
 using ChatClient.MVVM.Core;
 using ChatClient.Net;
 using System.Globalization;
+using System.Security.Cryptography;
+using ChatClient.MVVM.Model;
 
 namespace ChatClient.MVVM.ViewModel
 {
@@ -24,6 +26,7 @@ namespace ChatClient.MVVM.ViewModel
     class MainViewModel
     {
         public ObservableCollection<string> Messages { get; set; }
+        public ObservableCollection<UserModel> Users { get; set; }
         public ClientState State { get; set; }
         public RelayCommand ConnectToServerCommand { get; set; }
 
@@ -33,7 +36,10 @@ namespace ChatClient.MVVM.ViewModel
         public MainViewModel()
         {
             Messages = new ObservableCollection<string>();
+            Users = new ObservableCollection<UserModel>();
             _server = new Server();
+
+            _server.connectEvent += UserConnected;
             State = ClientState.Disconnected;
             PrintMessage("Enter target IP Address");
         }
@@ -59,6 +65,7 @@ namespace ChatClient.MVVM.ViewModel
                         if (_server.ConnectToServer(_ipAddress, _username))
                         {
                             PrintMessage($"Connecting to {_ipAddress} with the username {_username}");
+                            State = ClientState.Connected;
                         }
 
                         else
@@ -69,10 +76,8 @@ namespace ChatClient.MVVM.ViewModel
 
                     break;
 
-                case ClientState.Connecting:
-                    break;
-
                 case ClientState.Connected:
+                    PrintMessage(input);
                     break;
 
                 default:
@@ -83,6 +88,22 @@ namespace ChatClient.MVVM.ViewModel
         public void PrintMessage(string message)
         {
             Application.Current.Dispatcher.Invoke(() => Messages.Add(message));
+        }
+
+        private void UserConnected()
+        {
+            var user = new UserModel
+            {
+                Username = _server.PacketReader.ReadMessage(),
+                UID = _server.PacketReader.ReadMessage(),
+            };
+
+            if (!Users.Any(x => x.UID == user.UID))
+            {
+                Application.Current.Dispatcher.Invoke(() => Users.Add(user));
+
+                PrintMessage($"User {user.Username} has connected.");
+            }
         }
     }
 }

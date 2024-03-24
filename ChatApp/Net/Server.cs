@@ -14,7 +14,9 @@ namespace ChatClient.Net
         public bool IsConnected { get; set; }
 
         private TcpClient _client;
-        private PacketBuilder _packetBuilder;
+        public PacketReader PacketReader;
+
+        public event Action connectEvent;
 
         public Server()
         {
@@ -29,16 +31,42 @@ namespace ChatClient.Net
             if (!_client.Connected && IPAddress.TryParse(ipAddress, out parsedIP))
             {
                 _client.Connect(parsedIP, 7891);
-                PacketBuilder connectPacket = new PacketBuilder();
+                PacketReader = new PacketReader(_client.GetStream());
 
-                connectPacket.WriteOpCode(0);
-                connectPacket.WriteMessage(username);
-                _client.Client.Send(connectPacket.GetPacketBytes());
+                if (!string.IsNullOrEmpty(username))
+                {
+                    PacketBuilder connectPacket = new PacketBuilder();
+                    connectPacket.WriteOpCode(0);
+                    connectPacket.WriteMessage(username);
+                    _client.Client.Send(connectPacket.GetPacketBytes());
 
-                IsConnected = _client.Connected;
+                    IsConnected = _client.Connected;
+                }
+
+                ReadPackets();
             }
 
             return _client.Connected;
+        }
+
+        private void ReadPackets()
+        {
+            Task.Run(() =>
+            {
+                while (true)
+                {
+                    byte opCode = PacketReader.ReadByte();
+                    switch (opCode)
+                    {
+                        case 1:
+                            connectEvent?.Invoke();
+                            break;
+                        default:
+                            Console.WriteLine("Ahh yes of course...");
+                            break;
+                    }
+                }
+            });
         }
     }
 }
