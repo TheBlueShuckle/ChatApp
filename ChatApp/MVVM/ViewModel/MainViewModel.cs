@@ -46,6 +46,8 @@ namespace ChatClient.MVVM.ViewModel
 
         public async void DirectToCorrectMethod(string input)
         {
+            PrintMessage(input);
+
             switch (State)
             {
                 case ClientState.Disconnected:
@@ -77,7 +79,6 @@ namespace ChatClient.MVVM.ViewModel
                     break;
 
                 case ClientState.Connected:
-                    PrintMessage(input);
                     break;
 
                 default:
