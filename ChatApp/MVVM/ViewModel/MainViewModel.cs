@@ -91,6 +91,7 @@ namespace ChatClient.MVVM.ViewModel
             }
         }
 
+        // Prints a message to client.
         public void PrintMessage(string message)
         {
             Application.Current.Dispatcher.Invoke(() => Messages.Add(message));
@@ -121,8 +122,8 @@ namespace ChatClient.MVVM.ViewModel
         private void UserDisconnected()
         {
             string uid = _server.PacketReader.ReadMessage();
-            UserModel user = Users.Where(x => x.UID == uid).FirstOrDefault();
-            Application.Current.Dispatcher.Invoke(() => Users.Remove(user));
+            UserModel disconnectedUser = Users.Where(x => x.UID == uid).FirstOrDefault();
+            Application.Current.Dispatcher.Invoke(() => Users.Remove(disconnectedUser));
         }
     }
 }

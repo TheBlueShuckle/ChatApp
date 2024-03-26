@@ -27,7 +27,8 @@ namespace ChatServer
             }
         }
 
-
+        // Sends connect message to all clients.
+        // Begins by writing the Opcode 1 which means the packet is a connection.
         static void BroadcastConnection()
         {
             foreach (Client user in _users)
@@ -43,6 +44,8 @@ namespace ChatServer
             }
         }
 
+        // Sends message to all clients.
+        // Uses the Opcode 5 which means that the packet is a message.
         public static void BroadcastMessage(string message)
         {
             foreach(Client user in _users)
@@ -54,6 +57,8 @@ namespace ChatServer
             }
         }
 
+        // Sends disconnect message to all clients.
+        // Uses the Opcode 10 which means that the packet is a disconnected user.
         public static void BroadcastDisconnect(string uid)
         {
             Client disconnectedUser = _users.Where(x => x.UID.ToString() == uid).FirstOrDefault();

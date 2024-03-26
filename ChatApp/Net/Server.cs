@@ -11,6 +11,8 @@ namespace ChatClient.Net
 {
     class Server
     {
+        private const int UserConnected = 1, MessageRecieved = 5, UserDisconnected = 10;
+
         public bool IsConnected { get; set; }
 
         private TcpClient _client;
@@ -38,7 +40,7 @@ namespace ChatClient.Net
                 if (!string.IsNullOrEmpty(username))
                 {
                     PacketBuilder connectPacket = new PacketBuilder();
-                    connectPacket.WriteOpCode(0);
+                    connectPacket.WriteOpcode(0);
                     connectPacket.WriteMessage(username);
                     _client.Client.Send(connectPacket.GetPacketBytes());
 
@@ -57,18 +59,18 @@ namespace ChatClient.Net
             {
                 while (true)
                 {
-                    byte opCode = PacketReader.ReadByte();
-                    switch (opCode)
+                    byte opcode = PacketReader.ReadByte();
+                    switch (opcode)
                     {
-                        case 1:
+                        case UserConnected:
                             connectEvent?.Invoke();
                             break;
 
-                        case 5:
+                        case MessageRecieved:
                             messageRecievedEvent?.Invoke();
                             break;
 
-                        case 10:
+                        case UserDisconnected:
                             userDisconnectEvent?.Invoke();
                             break;
 
@@ -80,10 +82,12 @@ namespace ChatClient.Net
             });
         }
 
+        // Sends message to server. 
+        // Specifically for messages from the user, not disconnect or connect messages.
         public void SendMessageToServer(string msg)
         {
             PacketBuilder messagePacket = new PacketBuilder();
-            messagePacket.WriteOpCode(5);
+            messagePacket.WriteOpcode(5);
             messagePacket.WriteMessage(msg);
             _client.Client.Send(messagePacket.GetPacketBytes());
         }

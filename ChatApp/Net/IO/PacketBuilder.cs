@@ -12,7 +12,7 @@ namespace ChatClient.Net.IO
             _memStream = new MemoryStream();
         }
 
-        public void WriteOpCode(byte opCode)
+        public void WriteOpcode(byte opCode)
         {
             _memStream.WriteByte(opCode);
         }

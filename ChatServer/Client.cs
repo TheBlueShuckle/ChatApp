@@ -30,9 +30,9 @@ namespace ChatServer
             Task.Run(Process);
         }
 
+        // Runs until client disconnects
         private void Process()
         {
-            // Runs until client disconnects
             while (true)
             {
                 try
