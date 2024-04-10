@@ -20,7 +20,6 @@ namespace ChatClient.MVVM.ViewModel
     public enum ClientState
     {
         Disconnected,
-        Connecting,
         Connected,
     }
 
@@ -29,8 +28,6 @@ namespace ChatClient.MVVM.ViewModel
         public ObservableCollection<string> Messages { get; set; }
         public ObservableCollection<UserModel> Users { get; set; }
         public ClientState State { get; set; }
-        public RelayCommand ConnectToServerCommand { get; set; }
-        public string Message { get; set; } 
 
         private Server _server;
         private string _ipAddress, _username;
@@ -48,46 +45,88 @@ namespace ChatClient.MVVM.ViewModel
             PrintMessage("Enter target IP Address");
         }
 
-        public void DirectToCorrectMethod(string input)
+        public void DirectInput(string input)
         {
-            switch (State)
+            if (input[0] == '/')
             {
-                case ClientState.Disconnected:
-                    if (string.IsNullOrEmpty(_ipAddress))
-                    {
-                        _ipAddress = input;
-                        PrintMessage(input);
-                        PrintMessage("Enter Username:");
-                    }
+                PrintInput(input);
+                string command = input.Substring(1);
 
-                    else if (string.IsNullOrEmpty(_username))
-                    {
-                        _username = input;
-                        PrintMessage(input);
-                    }
+                switch (command)
+                {
+                    case "leave":
+                        PrintMessage("Got you hehe");
+                        break;
 
-                    if (!string.IsNullOrEmpty(_ipAddress) && !string.IsNullOrEmpty(_username))
-                    {
-                        if (_server.ConnectToServer(_ipAddress, _username))
+                    case "list":
+                        PrintMessage("Got you again hehe");
+
+                        foreach(UserModel user in Users)
                         {
-                            PrintMessage($"Connecting to {_ipAddress} with the username {_username}");
-                            State = ClientState.Connected;
+                            PrintMessage(user.Username);
                         }
 
-                        else
-                        {
-                            PrintMessage($"Could not connect to server with the IP Address {_ipAddress}");
-                        }
-                    }
+                        PrintMessage("Just kidding...");
+                        break;
 
-                    break;
+                    default:
+                        break;
+                }
+            }
 
-                case ClientState.Connected:
-                    _server.SendMessageToServer(input);
-                    break;
+            else
+            {
+                switch (State)
+                {
+                    case ClientState.Disconnected:
+                        GetInputs(input);
+                        break;
 
-                default:
-                    break;
+                    case ClientState.Connected:
+                        _server.SendMessageToServer(input);
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+        }
+
+        private void GetInputs(string input)
+        {
+            if (string.IsNullOrEmpty(_ipAddress))
+            {
+                _ipAddress = input;
+                PrintInput(input);
+                PrintMessage("Enter Username:");
+            }
+
+            else if (string.IsNullOrEmpty(_username))
+            {
+                _username = input;
+                PrintInput(input);
+            }
+
+            ConnectToServer();
+        }
+
+        private void ConnectToServer()
+        {
+            if (!string.IsNullOrEmpty(_ipAddress) && !string.IsNullOrEmpty(_username))
+            {
+                if (_server.ConnectToServer(_ipAddress, _username))
+                {
+                    PrintMessage($"Connecting to {_ipAddress} with the username {_username}");
+                    State = ClientState.Connected;
+                }
+
+                else
+                {
+                    PrintMessage($"Could not connect to server with the IP Address {_ipAddress}");
+                    _ipAddress = string.Empty;
+                    _username = string.Empty;
+                    PrintMessage("Enter target IP Address");
+                }
             }
         }
 
@@ -95,6 +134,12 @@ namespace ChatClient.MVVM.ViewModel
         public void PrintMessage(string message)
         {
             Application.Current.Dispatcher.Invoke(() => Messages.Add(message));
+        }        
+        
+        // Prints the user input.
+        public void PrintInput(string message)
+        {
+            Application.Current.Dispatcher.Invoke(() => Messages.Add($"> {message}"));
         }
 
         private void UserConnected()

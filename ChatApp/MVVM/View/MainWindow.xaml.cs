@@ -37,7 +37,7 @@ namespace ChatApp
 
                     binding?.UpdateSource();
 
-                    viewModel?.DirectToCorrectMethod(textBox.Text);
+                    viewModel?.DirectInput(textBox.Text);
                     textBox.Clear();
                 }
             }
