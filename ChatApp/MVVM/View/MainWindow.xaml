@@ -21,19 +21,20 @@
     
     <Grid>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition MinWidth="800"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
+            <RowDefinition MinHeight="400" Height="*"/>
             <RowDefinition Height="49"/>
         </Grid.RowDefinitions>
 
         <ListView Grid.Row="0"
-                    Background="Black" 
-                    Foreground="White"
-                    BorderThickness="0" 
-                    Margin="-2, 0, 0, 0"
-                    ItemsSource="{Binding Messages}"/>
+                  Background="Black" 
+                  Foreground="White"
+                  BorderThickness="0" 
+                  Margin="-2, 0, 0, 0"
+                  ItemsSource="{Binding Messages}"/>
 
         <DockPanel Grid.Row="1">
                 
